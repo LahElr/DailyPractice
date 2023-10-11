@@ -1,3 +1,6 @@
+from typing import Iterable, Union
+
+
 class LinkedListNode(object):
     def __init__(self, val=None, next=None, before=None):
         self.val = val
@@ -9,12 +12,13 @@ class LinkedListNode(object):
 
 
 class LinkedList(object):
-    def __init__(self, data=None):
-        if data is None or len(data) == 0:
+    def __init__(self, data:Union[Iterable,LinkedListNode]=None):
+        # assert hasattr(data,"__getitem__") or isinstance(data,LinkedList) or isinstance(data,LinkedListNode)
+        if data is None or (hasattr(data,"__len__") and len(data) == 0):
             self.head = None
             self.length = 0
             self.tail = None
-        else:
+        elif hasattr(data,"__getitem__"):
             self.head = LinkedListNode(data[0])
             self.length = len(data)
             if len(data) >= 1:
@@ -23,6 +27,24 @@ class LinkedList(object):
                     cur.next = LinkedListNode(val=d, before=cur)
                     self.tail = cur
                     cur = cur.next
+        elif isinstance(data,LinkedList):
+            self.head = None
+            self.length = 0
+            self.tail = None
+            cur = data.head
+            while cur is not None:
+                self.add_end(cur.val)
+                cur = cur.next
+        elif isinstance(data,LinkedListNode):
+            self.head = None
+            self.length = 0
+            self.tail = None
+            cur = data
+            while cur is not None:
+                self.add_end(cur.val)
+                cur = cur.next
+        else:
+            raise TypeError(f"Unexpected object {data} of type {type(data)}",stacklevel=2)
 
     def to_list(self):
         if self.length == 0:
@@ -57,6 +79,7 @@ class LinkedList(object):
     def add_end(self, val):
         if self.length == 0:
             self.head = self.tail = LinkedListNode(val)
+            self.length += 1
             return
         self.tail.next = LinkedListNode(val=val, before=self.tail)
         self.tail = self.tail.next
@@ -65,6 +88,7 @@ class LinkedList(object):
     def add_start(self, val):
         if self.length == 0:
             self.head = self.tail = LinkedListNode(val)
+            self.length += 1
             return
         self.head.before = LinkedListNode(val=val, next=self.head)
         self.head = self.head.before
