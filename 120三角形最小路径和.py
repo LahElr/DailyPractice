@@ -15,15 +15,15 @@ class Solution:
             # i = i+1
             for j, x in enumerate(line):
                 if j > 0:
-                    a = triangle[i][j - 1]
+                    a = triangle[i][j - 1] #上一行左边的
                 else:
                     a = 100000
                 try:
-                    b = triangle[i][j]
+                    b = triangle[i][j] #上一行正对着的
                 except IndexError:
                     b = 100000
                 # print(i, j, a, b)
-                triangle[i + 1][j] = x + min(a, b)
+                triangle[i + 1][j] = x + min(a, b) #这一行更新的最小路径
             # print(triangle[i + 1])
         return min(triangle[-1])
 
