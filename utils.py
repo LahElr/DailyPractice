@@ -2,7 +2,8 @@ import functools
 import warnings
 
 def deprecated(func):
-    """This is a decorator which can be used to mark functions
+    """cite: https://stackoverflow.com/questions/2536307/decorators-in-the-python-standard-lib-deprecated-specifically
+    This is a decorator which can be used to mark functions
     as deprecated. It will result in a warning being emitted
     when the function is used."""
     @functools.wraps(func)
