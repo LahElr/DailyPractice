@@ -27,6 +27,15 @@ class Trie:
             else:
                 return False
         return 0 in tgt
+    
+    def starts_with(self, word):
+        tgt = self.root
+        for ch in word:
+            if ch in tgt:
+                tgt = tgt[ch]
+            else:
+                return False
+        return True
 
     def __len__(self):
         return self.size
